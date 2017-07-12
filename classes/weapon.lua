@@ -23,7 +23,7 @@ function Weapon:loadImage(group, instance)
 	local width, height = self.size.w, self.size.h
 	local image = display.newRect(group, 222, 2, width, height)
 	--local image = display.newImageRect(group, img, size.w, size.h)
-	physics.addBody(image, "dynamic", {density = 0.0000000000001, box = { halfWidth=64, halfHeight=8, x=0, y=8, angle=0 }})
+	physics.addBody(image, "dynamic", {box = { halfWidth=64, halfHeight=8, x=0, y=8, angle=0 }})
 	image.object = instance
 	return image
 end

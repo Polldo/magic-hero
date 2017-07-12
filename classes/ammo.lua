@@ -9,9 +9,9 @@ Ammo.transition = nil
 
 function Ammo:new(group, position)
 	local instance = {}
-	instance.image = self:loadImage(group, position, instance)
 	setmetatable(instance, self)
 	self.__index = self
+	instance.image = self:loadImage(group, position, instance)
 	instance:move()
 	return instance
 end

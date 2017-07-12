@@ -6,12 +6,13 @@ Hero.size = {w = 70, h = 70}
 Hero.weapon = nil
 Hero.shootDelay = 200
 Hero.speed = 300
+Hero.health = 200
 
 function Hero:new(group)
 	local instance = {}
-	instance.image = self:loadImage(group, instance)
 	setmetatable(instance, self)
 	self.__index = self
+	instance.image = self:loadImage(group, instance)
 	instance:activateMovement()
 	return instance
 end
@@ -22,6 +23,7 @@ function Hero:loadImage(group, instance)
 	--local image = display.newImageRect(group, img, size.w, size.h)
 	physics.addBody(image, "dynamic", {box = { halfWidth=64, halfHeight=8, x=0, y=8, angle=0 }})
 	image.object = instance
+	image.isFixedRotation = true
 	return image
 end
 
