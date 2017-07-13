@@ -1,5 +1,7 @@
 -- Requirements
 local composer = require "composer"
+local Joystick = require "classes.joystick"
+local Button = require "classes.button"
 local Hero = require "classes.hero"
 local Weapon = require "classes.weapon"
 local Monster = require "classes.monster"
@@ -10,6 +12,7 @@ local scene = composer.newScene()
 local backGroup
 local mainGroup
 local uiGroup
+local jsGroup
 
 local hero
 local weapon
@@ -26,20 +29,25 @@ function scene:create( event )
   sceneGroup:insert( mainGroup )  
 
   uiGroup = display.newGroup()   
-  sceneGroup:insert( uiGroup )    
+  sceneGroup:insert( uiGroup )  
 
   hero = Hero:new(mainGroup)
   hero.image.x, hero.image.y = display.actualContentWidth/2, hero.image.height*2
   weapon = Weapon:new(mainGroup, hero)
   hero.weapon = weapon
-  weapon.image.x, weapon.image.y = hero.image.x + weapon.image.width/2, hero.image.y*3/2
+  weapon.image.x, weapon.image.y = hero.image.x + weapon.image.width/2, hero.image.y
   local joint = physics.newJoint("weld", hero.image, weapon.image, hero.image.x, hero.image.y)
 
-  hero.image.rotation = 50
-  print(hero.image.rotation)
-
   local monster = Monster:new(mainGroup)
-  monster.image.x, monster.image.y = hero.image.x, display.actualContentHeight
+    monster.image.x, monster.image.y = hero.image.x, display.actualContentHeight
+
+  local action = Button.newButton(uiGroup, "action", 90)
+    action.x, action.y = display.actualContentWidth - action.width/2, display.actualContentHeight - action.height/2
+
+  local joystick = Joystick.new(20, 100)
+    joystick.x, joystick.y = display.screenOriginX + joystick.width/2, display.actualContentHeight - joystick.height/2
+    jsGroup = joystick.group
+
 
 end
 

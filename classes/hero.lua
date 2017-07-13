@@ -6,7 +6,7 @@ Hero.imgPath = ""
 Hero.size = {w = 70, h = 70}
 Hero.weapon = nil
 Hero.shootDelay = 200
-Hero.speed = 300
+Hero.speed = 800
 Hero.health = 200
 
 function Hero:new(group)
@@ -56,43 +56,21 @@ end
 function Hero:activateMovement()
 	local instance = self
 	local lastDirection = nil
-	local function key(event)
+	local function axis(event)
 		if event.phase == "down" then
-			if event.keyName == "right" then 
-				instance:moveRight()
-				lastDirection = "right"
-			elseif event.keyName == "left" then 
-				instance:moveLeft()
-				lastDirection = "left"
-		  	end
+			instance:move(event.axisX, event.axisY, event.angle)
 		elseif event.phase == "up" then 
-			if event.keyName == "right" then
-				instance:stopMovement()
-			elseif event.keyName == "left" then 
-				instance:stopMovement()
-			end
-		elseif event.phase == "moved" then
-			print(event.keyName)
-			if event.keyName == "right" and lastDirection ~= "right" then
-				instance:moveRight()
-				lastDirection = "right"
-			elseif event.keyName == "left" and lastDirection ~= "left" then
-				instance:moveLeft()
-				lastDirection = "left"
-			end
+			instance:stopMovement()
 		end
 	end
-	Runtime:addEventListener("key", key)  
+	Runtime:addEventListener("axis", axis)  
 end		
 
-function Hero:moveRight()
+function Hero:move(dx, dy, angle)
 	local image = self.image
-	image:setLinearVelocity(self.speed, 0)
-end
-
-function Hero:moveLeft()
-	local image = self.image
-	image:setLinearVelocity(-self.speed, 0)
+	local speed = self.speed
+	image:setLinearVelocity(dx*speed, dy*speed)
+	image.rotation = angle
 end
 
 function Hero:stopMovement()

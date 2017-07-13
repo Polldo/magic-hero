@@ -1,17 +1,17 @@
 local Button = {}
 local stage = display.getCurrentStage()
 
-function Button.newButton(key, img)
+function Button.newButton(group, key, img)
 	
 	local instance
 
 	if type(img) == "number" then
-	    instance = display.newCircle(0,0, img)
+	    instance = display.newCircle(group, 0,0, img)
 	    instance:setFillColor(0.2, 0.2, 0.2, 0.9)
 	    instance.strokeWidth = 6
 	    instance:setStrokeColor(1, 1, 1, 1)
   	else
-    	instance = display.newImage(img, 0, 0)
+    	instance = display.newImage(group, img, 0, 0)
   	end
 
 	function instance:touch(event)

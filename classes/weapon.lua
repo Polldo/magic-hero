@@ -1,7 +1,7 @@
 local Weapon = {}
 
 Weapon.heroDelay = nil
-Weapon.delay = 500
+Weapon.delay = 100
 Weapon.isCharged = true
 Weapon.isShooting = false
 Weapon.img = ""
