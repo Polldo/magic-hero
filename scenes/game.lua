@@ -35,6 +35,9 @@ function scene:create( event )
   weapon.image.x, weapon.image.y = hero.image.x + weapon.image.width/2, hero.image.y*3/2
   local joint = physics.newJoint("weld", hero.image, weapon.image, hero.image.x, hero.image.y)
 
+  hero.image.rotation = 50
+  print(hero.image.rotation)
+
   local monster = Monster:new(mainGroup)
   monster.image.x, monster.image.y = hero.image.x, display.actualContentHeight
 

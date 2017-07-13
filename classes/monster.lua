@@ -1,5 +1,6 @@
 local Monster = {}
 
+Monster.isMonster = true
 Monster.health = 20
 Monster.speed = 10
 Monster.damage = 20
@@ -24,13 +25,28 @@ function Monster:loadImage(group, instance)
 	return image
 end
 
+function Monster:collideHero(hero)
+	self:remove()
+end
+
 function Monster:move()
 	self.moving = timer.performWithDelay(10, function() self:movement() end, 0)
 end
 
 function Monster:movement()
 	local image = self.image
-	image.y = image.y - self.speed
+	if image.y < -10 then
+		self:remove()
+	else
+		image.y = image.y - self.speed
+	end
+end
+
+function Monster:remove()
+	timer.cancel(self.moving)
+	self.image:removeSelf()
+	self.image.object = nil
+	self.image = nil
 end
 
 return Monster

@@ -24,6 +24,7 @@ function Weapon:loadImage(group, instance)
 	local image = display.newRect(group, 222, 2, width, height)
 	--local image = display.newImageRect(group, img, size.w, size.h)
 	physics.addBody(image, "dynamic", {box = { halfWidth=64, halfHeight=8, x=0, y=8, angle=0 }})
+	image.isSensor = true
 	image.object = instance
 	return image
 end
@@ -54,7 +55,7 @@ end
 function Weapon:shoot()
 	if self.isCharged then
 		--shoot
-		self.ammo:new(self.group, {x = self.image.x, y = self.image.y})
+		self.ammo:new(self.group, {x = self.image.x, y = self.image.y}, self.image.rotation)
 
 		self.isCharged = false
 		local delay = self.delay + self.heroDelay

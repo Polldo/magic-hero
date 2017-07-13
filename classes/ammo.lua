@@ -1,5 +1,6 @@
 local Ammo = {}
 
+Ammo.isAmmo = true
 Ammo.damage = 1
 Ammo.speed = 1
 Ammo.range = 500
@@ -7,11 +8,12 @@ Ammo.img = ""
 Ammo.size = {w = 10, h = 10}
 Ammo.transition = nil
 
-function Ammo:new(group, position)
+function Ammo:new(group, position, angle)
 	local instance = {}
 	setmetatable(instance, self)
 	self.__index = self
 	instance.image = self:loadImage(group, position, instance)
+	instance.angle = angle
 	instance:move()
 	return instance
 end
@@ -30,8 +32,11 @@ end
 
 function Ammo:move()
 	local image = self.image
+	local angle = math.rad(self.angle) + math.rad(90)
+	local x, y = math.cos(angle)*self.range, math.sin(angle)*self.range
 	self.transition = transition.to(image, {
-			y = image.y + self.range,
+			y = image.y + y, x = image.x + x,
+			time = self.range / self.speed,
 			onComplete = function() self.remove(self) end
 		})
 end

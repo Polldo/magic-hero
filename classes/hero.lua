@@ -1,5 +1,6 @@
 local Hero = {}
 
+Hero.isHero = true
 Hero.image = nil
 Hero.imgPath = ""
 Hero.size = {w = 70, h = 70}
@@ -14,6 +15,7 @@ function Hero:new(group)
 	self.__index = self
 	instance.image = self:loadImage(group, instance)
 	instance:activateMovement()
+	instance:activateCollision()
 	return instance
 end
 
@@ -29,6 +31,26 @@ end
 
 function Hero:setWeapon(weapon)
 	self.weapon = weapon
+end
+
+function Hero:activateCollision()
+	local image = self.image
+	function image:collision(event)
+		local self = self.object
+		if event.phase == "began" then
+			local object = event.other.object
+			if object.isMonster then
+				self:collideMonster(object)
+				object:collideHero(self)
+			end
+		end
+	end
+  	image:addEventListener("collision") 
+end
+
+function Hero:collideMonster(monster)
+	local damage = monster.damage
+
 end
 
 function Hero:activateMovement()
