@@ -2,10 +2,10 @@ local Joystick = {}
 
 local stage = display.getCurrentStage()
 
-function Joystick.new(innerRadius, outerRadius)
+function Joystick.new(nameEvent, innerRadius, outerRadius)
 	innerRadius, outerRadius = innerRadius or 48, outerRadius or 96
 	local instance = display.newGroup()
-
+		instance.nameEvent = nameEvent
 	local outerArea 
 	if type(outerRadius) == "number" then
 		outerArea = display.newCircle( instance, 0,0, outerRadius )
@@ -60,7 +60,7 @@ function Joystick.new(innerRadius, outerRadius)
 			self.y = 0
 			stage:setFocus(nil, event.id)
 			self.isFocus = false
-			axisEvent = {name = "axis", phase = "up"}
+			axisEvent = {name = instance.nameEvent, phase = event.phase}
 			Runtime:dispatchEvent(axisEvent)
 		end
 		instance.axisX = self.x / stopRadius
@@ -73,7 +73,7 @@ function Joystick.new(innerRadius, outerRadius)
 			instance.axisX = 0
 		end
 		if instance.axisX ~= 0 or instance.axisY ~= 0 then
-			axisEvent = {name = "axis", phase = "down", axisX = instance.axisX, axisY = instance.axisY, angle = instance.angle}
+			axisEvent = {name = instance.nameEvent, phase = event.phase, axisX = instance.axisX, axisY = instance.axisY, angle = instance.angle}
 			Runtime:dispatchEvent(axisEvent)
 			print("X:   " .. instance.axisX .. "     Y:  " .. instance.axisY .. "    Angle: " .. instance.angle)
 		end

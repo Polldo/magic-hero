@@ -1,10 +1,11 @@
 local Weapon = {}
 
+Weapon.hero = nil
 Weapon.heroDelay = nil
 Weapon.delay = 100
 Weapon.isCharged = true
 Weapon.isShooting = false
-Weapon.img = ""
+Weapon.imgPath = ""
 Weapon.size = {w = 50, h = 50}
 Weapon.ammo = require"classes.ammo"
 
@@ -14,6 +15,7 @@ function Weapon:new(group, hero)
 	self.__index = self
 	instance.image = self:loadImage(group, instance)
 	instance.group = group
+	instance.hero = hero
 	instance.heroDelay = hero.shootDelay
 	instance:activateShoot()
 	return instance
@@ -26,6 +28,7 @@ function Weapon:loadImage(group, instance)
 	physics.addBody(image, "dynamic", {box = { halfWidth=64, halfHeight=8, x=0, y=8, angle=0 }})
 	image.isSensor = true
 	image.object = instance
+	image:setFillColor( 0.4, 0.4, 0.4, 0.9 )
 	return image
 end
 
@@ -34,17 +37,18 @@ function Weapon:setAmmo(ammo)
 end
 
 function Weapon:activateShoot()
+	local heroImage = self.hero.image
 	function self.keyFunc(event)
-		if event.keyName == "action" then
-			if event.phase == "down" then
-				self:startShoot()
-			elseif event.phase == "up" then 
-				self:stopShoot()
-			elseif event.phase == "moved" then
-			end
+		if event.phase == "began" then
+			heroImage.rotation = event.angle
+			self:startShoot()
+		elseif event.phase == "ended" then 
+			self:stopShoot()
+		elseif event.phase == "moved" then
+			heroImage.rotation = event.angle
 		end
 	end
-	Runtime:addEventListener("key", self.keyFunc)  
+	Runtime:addEventListener("shootAxis", self.keyFunc)  
 end
 
 function Weapon:startShoot()
@@ -55,7 +59,7 @@ end
 function Weapon:shoot()
 	if self.isCharged then
 		--shoot
-		self.ammo:new(self.group, {x = self.image.x, y = self.image.y}, self.image.rotation)
+		self.ammo:new(self.group, {x = self.image.x, y = self.image.y}, self.hero.image.rotation)
 
 		self.isCharged = false
 		local delay = self.delay + self.heroDelay

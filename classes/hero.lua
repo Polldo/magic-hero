@@ -23,7 +23,7 @@ function Hero:loadImage(group, instance)
 	local width, height = self.size.w, self.size.h
 	local image = display.newRect(group, 0, 0, width, height)
 	--local image = display.newImageRect(group, img, size.w, size.h)
-	physics.addBody(image, "dynamic", {box = { halfWidth=64, halfHeight=8, x=0, y=8, angle=0 }})
+	physics.addBody(image, "dynamic")--, {box = { halfWidth=64, halfHeight=8, x=0, y=8, angle=0 }})
 	image.object = instance
 	image.isFixedRotation = true
 	return image
@@ -42,6 +42,9 @@ function Hero:activateCollision()
 			if object.isMonster then
 				self:collideMonster(object)
 				object:collideHero(self)
+			elseif object.isDrop then
+				--self:collideDrop(object) probably useful for changing audio or something similar
+				object:collideHero(self)
 			end
 		end
 	end
@@ -57,9 +60,9 @@ function Hero:activateMovement()
 	local instance = self
 	local lastDirection = nil
 	local function axis(event)
-		if event.phase == "down" then
+		if event.phase == "began" or event.phase == "moved" then
 			instance:move(event.axisX, event.axisY, event.angle)
-		elseif event.phase == "up" then 
+		elseif event.phase == "ended" then 
 			instance:stopMovement()
 		end
 	end
@@ -70,7 +73,9 @@ function Hero:move(dx, dy, angle)
 	local image = self.image
 	local speed = self.speed
 	image:setLinearVelocity(dx*speed, dy*speed)
-	image.rotation = angle
+	if not self.weapon.isShooting then
+		image.rotation = angle
+	end
 end
 
 function Hero:stopMovement()

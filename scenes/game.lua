@@ -12,7 +12,8 @@ local scene = composer.newScene()
 local backGroup
 local mainGroup
 local uiGroup
-local jsGroup
+local jsSxGroup
+local jsDxGroup
 
 local hero
 local weapon
@@ -41,13 +42,17 @@ function scene:create( event )
   local monster = Monster:new(mainGroup)
     monster.image.x, monster.image.y = hero.image.x, display.actualContentHeight
 
-  local action = Button.newButton(uiGroup, "action", 90)
-    action.x, action.y = display.actualContentWidth - action.width/2, display.actualContentHeight - action.height/2
+  local w = display.actualContentWidth/4
+  local h = display.actualContentHeight/8
+  local jsRadius = math.min(w, h)
 
-  local joystick = Joystick.new(20, 100)
-    joystick.x, joystick.y = display.screenOriginX + joystick.width/2, display.actualContentHeight - joystick.height/2
-    jsGroup = joystick.group
+  local joystickMov = Joystick.new("axis", jsRadius/2, jsRadius)
+    joystickMov.x, joystickMov.y = display.screenOriginX + joystickMov.width/2, display.actualContentHeight - joystickMov.height/2
+    jsSxGroup = joystickMov.group
 
+  local joystickShoot = Joystick.new("shootAxis", jsRadius/3, jsRadius)
+    joystickShoot.x, joystickShoot.y = display.actualContentWidth - joystickShoot.width/2, display.actualContentHeight - joystickShoot.height/2
+    jsDxGroup = joystickShoot.group
 
 end
 
