@@ -68,6 +68,7 @@ function Monster:remove()
 	self.image:removeSelf()
 	self.image.object = nil
 	self.image = nil
+	self = nil
 end
 
 return Monster

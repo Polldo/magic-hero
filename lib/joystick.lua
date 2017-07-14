@@ -92,6 +92,11 @@ function Joystick.new(nameEvent, innerRadius, outerRadius)
 		self.axisY = 0
 	end
 
+	function instance:remove()
+		self:deactivate()
+		self:removeSelf()
+	end
+
 	instance:activate()
 	return instance
 end

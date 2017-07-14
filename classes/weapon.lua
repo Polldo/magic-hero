@@ -83,9 +83,17 @@ function Weapon:setHeroDelay(delay)
 end
 
 function Weapon:deactivate()
-	self.stopShoot()
-	timer.cancel(self.reloading)
-	Runtime:removeEventListener("key", self.keyFunc)
+	self:stopShoot()
+	if self.reloading then timer.cancel(self.reloading) end
+	Runtime:removeEventListener("shootAxis", self.keyFunc)
+end
+
+function Weapon:remove()
+	self:deactivate()
+	self.image.object = nil
+	self.image:removeSelf()
+	self.image = nil
+	self = nil
 end
 
 return Weapon

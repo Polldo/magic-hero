@@ -1,7 +1,6 @@
 -- Requirements
 local composer = require "composer"
-local Joystick = require "classes.joystick"
-local Button = require "classes.button"
+local Joystick = require "lib.joystick"
 local Hero = require "classes.hero"
 local Weapon = require "classes.weapon"
 local Monster = require "classes.monster"
@@ -33,10 +32,11 @@ function scene:create( event )
   sceneGroup:insert( uiGroup )  
 
   hero = Hero:new(mainGroup)
-  hero.image.x, hero.image.y = display.actualContentWidth/2, hero.image.height*2
+    hero.image.x, hero.image.y = display.actualContentWidth/2, hero.image.height*2
   weapon = Weapon:new(mainGroup, hero)
-  hero.weapon = weapon
-  weapon.image.x, weapon.image.y = hero.image.x + weapon.image.width/2, hero.image.y
+    weapon.image.x, weapon.image.y = hero.image.x + weapon.image.width/2, hero.image.y
+  hero:setWeapon(weapon)
+
   local joint = physics.newJoint("weld", hero.image, weapon.image, hero.image.x, hero.image.y)
 
   local monster = Monster:new(mainGroup)

@@ -53,20 +53,20 @@ end
 
 function Hero:collideMonster(monster)
 	local damage = monster.damage
-
+	self:remove()
 end
 
 function Hero:activateMovement()
 	local instance = self
 	local lastDirection = nil
-	local function axis(event)
+	function self.axis(event)
 		if event.phase == "began" or event.phase == "moved" then
 			instance:move(event.axisX, event.axisY, event.angle)
 		elseif event.phase == "ended" then 
 			instance:stopMovement()
 		end
 	end
-	Runtime:addEventListener("axis", axis)  
+	Runtime:addEventListener("axis", self.axis)  
 end		
 
 function Hero:move(dx, dy, angle)
@@ -88,5 +88,18 @@ function Hero:stopMovement()
 	end
 end
 
+function Hero:deactivate()
+	self.image:removeEventListener("collision")
+	Runtime:removeEventListener("axis", self.axis)
+end
+
+function Hero:remove()
+	self.weapon:remove()
+	self:deactivate()
+	self.image.object = nil
+	self.image:removeSelf()
+	self.image = nil
+	self = nil
+end
 
 return Hero 
