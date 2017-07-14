@@ -2,7 +2,7 @@ local Weapon = {}
 
 Weapon.hero = nil
 Weapon.heroDelay = nil
-Weapon.delay = 100
+Weapon.delay = 10
 Weapon.isCharged = true
 Weapon.isShooting = false
 Weapon.imgPath = ""

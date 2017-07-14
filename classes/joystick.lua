@@ -29,7 +29,6 @@ function Joystick.new(nameEvent, innerRadius, outerRadius)
 		joystick.group = instance
 	end  
 
-	-- where should joystick motion be stopped?
 	local stopRadius = outerRadius - innerRadius
 
 	function joystick:touch(event)
@@ -45,7 +44,9 @@ function Joystick.new(nameEvent, innerRadius, outerRadius)
 			local angle = -math.atan2(posY, posX)
 			local angleDeg = math.deg(-math.atan2( posX, posY ))
 			instance.angle = angleDeg
-			local distance = math.sqrt((posX*posX)+(posY*posY))
+		
+
+					local distance = math.sqrt((posX*posX)+(posY*posY))
 
 			if( distance >= stopRadius ) then
 				distance = stopRadius
@@ -55,27 +56,23 @@ function Joystick.new(nameEvent, innerRadius, outerRadius)
 				self.x = posX
 				self.y = posY
 			end
+			-- self.x = stopRadius*math.cos(angle)
+			-- self.y = -stopRadius*math.sin(angle)
 		else
 			self.x = 0
 			self.y = 0
 			stage:setFocus(nil, event.id)
 			self.isFocus = false
-			axisEvent = {name = instance.nameEvent, phase = event.phase}
+			axisEvent = {name = instance.nameEvent, phase = event.phase, axisX = 0, axisY = 0, angle = 0}
 			Runtime:dispatchEvent(axisEvent)
 		end
 		instance.axisX = self.x / stopRadius
 		instance.axisY = self.y / stopRadius
 		local axisEvent
-		if self.y == self._y then
-			instance.axisY = 0
-		end
-		if self.x == self._x then
-			instance.axisX = 0
-		end
-		if instance.axisX ~= 0 or instance.axisY ~= 0 then
+		if instance.axisX ~= nil and instance.axisY ~= nil and (instance.axisX ~= 0) or (instance.axisY ~= 0) then
 			axisEvent = {name = instance.nameEvent, phase = event.phase, axisX = instance.axisX, axisY = instance.axisY, angle = instance.angle}
 			Runtime:dispatchEvent(axisEvent)
-			print("X:   " .. instance.axisX .. "     Y:  " .. instance.axisY .. "    Angle: " .. instance.angle)
+			--print("X:   " .. instance.axisX .. "     Y:  " .. instance.axisY .. "    Angle: " .. instance.angle)
 		end
 		self._x, self._y = self.x, self.y
 		return true
