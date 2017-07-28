@@ -4,27 +4,22 @@ local composer = require "composer"
 -- Variables local to scene
 local scene = composer.newScene()
 
-local storage
+local function gotoGame()
+  composer.gotoScene("scenes.game")
+end
 
-local function gotoPortal(event)
-  local portal = event.target
-  composer.gotoScene(portal.path)
+local function gotoHangar()
+  composer.gotoScene("scenes.hangar")
 end
 
 function scene:create( event )
   local sceneGroup = self.view -- add display objects to this group
 
-  storage = composer.getVariable("storage")
-  local portals = storage.portals
-  print(#portals)
-  local portalListX, portalListY = 0, 30
-  for i = 1, #portals, 1 do
-    local portal = display.newRect(sceneGroup, 0, 0, 30, 30)
-      portalListX = portalListX + 50
-      portal.x, portal.y = portalListX, portalListY 
-      portal.path = portals[i].path
-      portal:addEventListener("tap", gotoPortal)
-  end
+  local playButton = display.newText(sceneGroup, "Play", 50, 100, native.systemFont, 30)
+    playButton:addEventListener("tap", gotoGame)
+
+  local hangarButton = display.newText(sceneGroup, "Hangar", 400, 100, native.systemFont, 30)
+    hangarButton:addEventListener("tap", gotoHangar)
 
 end
 

@@ -4,4 +4,7 @@ system.activate("multitouch")
 
 math.randomseed(os.time())
 
-composer.gotoScene("scenes.game")
+local storage = require "classes.storage"
+composer.setVariable("storage", storage)
+
+composer.gotoScene("scenes.menu")

@@ -7,22 +7,25 @@ Monster.damage = 20
 Monster.size = {w = 40, h = 40}
 --Monster.moving = nil
 
-function Monster:new(group)
+function Monster:new()
 	local instance = {}
 	setmetatable(instance, self)
 	self.__index = self
-	instance.image = self:loadImage(group, instance)
-	instance:move()
-	instance:activateCollision()
 	return instance
 end
 
-function Monster:loadImage(group, instance)
+function Monster:activate(group)
+	self.image = self:loadImage(group)
+	self:move()
+	self:activateCollision()
+end
+
+function Monster:loadImage(group)
 	local width, height = self.size.w, self.size.h
 	local image = display.newRect(group, 0, 0, width, height)
 	--local image = display.newImageRect(group, img, size.w, size.h)
-	physics.addBody(image, "dynamic", {isSensor = true})
-	image.object = instance
+	physics.addBody(image, "dynamic")
+	image.object = self
 	return image
 end
 
