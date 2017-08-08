@@ -4,14 +4,15 @@ local MonsterChaser = Monster:new()
 
 MonsterChaser.size = {w = 40, h = 50}
 
-function MonsterChaser:new(group, hero)
-	local instance = self.__index.new(self)
-	instance:activate(group, hero)
+function MonsterChaser:new()
+	local super = getmetatable(self).__index
+	local instance = super.new(self)
 	return instance
 end
 
 function MonsterChaser:activate(group, hero)
-	getmetatable(self.__index).activate(self, group)
+	local super = getmetatable(MonsterChaser).__index
+	super.activate(self, group)
 	self.hero = hero
 end
 

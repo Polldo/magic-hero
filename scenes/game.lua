@@ -16,7 +16,6 @@ function scene:create( event )
 
   storage = composer.getVariable("storage")
   local portals = storage.portals
-  print(#portals)
   local portalListX, portalListY = 0, 30
   for i = 1, #portals, 1 do
     local portal = display.newRect(sceneGroup, 0, 0, 30, 30)

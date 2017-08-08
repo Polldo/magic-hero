@@ -9,8 +9,7 @@ Monster.size = {w = 40, h = 40}
 
 function Monster:new()
 	local instance = {}
-	setmetatable(instance, self)
-	self.__index = self
+	setmetatable(instance, {__index = self})
 	return instance
 end
 

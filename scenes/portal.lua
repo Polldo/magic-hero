@@ -22,13 +22,15 @@ local weapon
 local monsters = {}
 
 local function spawnMonster(intWave)
-  local numberMonsterPerWave = {5, 10, 6}
-  --   local monster = Monster:new()
-  --   monster:activate(mainGroup)
-  --   monster.image.x, monster.image.y = hero.image.x, display.actualContentHeight
-  -- monster = MonsterChaser:new(mainGroup, hero)
-  --   monster.image.x, monster.image.y = hero.image.x, display.actualContentHeight
-
+  local equivalentMonsters = {{class = Monster, quantity = 3}, {class = MonsterChaser, quantity = 1}}
+  local newMonsters = equivalentMonsters[math.random(1, #equivalentMonsters)]
+  newMonsters.quantity = newMonsters.quantity * intWave * 3
+  for i=0, newMonsters.quantity, 1 do
+    local monster = newMonsters.class:new()
+      monster:activate(mainGroup, hero)
+      monster.image.x, monster.image.y = math.random(0, display.actualContentWidth/monster.image.width)*monster.image.width, display.actualContentHeight
+    table.insert(monsters, monster)
+  end
 end
 
 function scene:create( event )
@@ -46,7 +48,7 @@ function scene:create( event )
   sceneGroup:insert( uiGroup )  
 
   hero = Hero:new(mainGroup)
-    hero.image.x, hero.image.y = display.actualContentWidth/2, hero.image.height*2
+    hero.image.x, hero.image.y = display.actualContentWidth/2, hero.image.height*2--display.actualContentHeight/2
   weapon = Weapon:new(mainGroup, hero)
     weapon.image.x, weapon.image.y = hero.image.x + weapon.image.width/2, hero.image.y
   hero:setWeapon(weapon)
@@ -62,6 +64,9 @@ function scene:create( event )
     joystickShoot.x, joystickShoot.y = display.actualContentWidth - joystickShoot.width/2, display.actualContentHeight - joystickShoot.height/2
     jsDxGroup = joystickShoot.group
 
+
+  local intTime = 1
+  timer.performWithDelay(5000, function() spawnMonster(intTime); intTime = intTime +1 end, 0)
 end
 
 local function enterFrame(event)

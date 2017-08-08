@@ -5,7 +5,7 @@ local composer = require "composer"
 local scene = composer.newScene()
 
 local function gotoGame()
-  composer.gotoScene("scenes.game")
+  composer.gotoScene("scenes.portal")
 end
 
 local function gotoHangar()

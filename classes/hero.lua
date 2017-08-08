@@ -53,7 +53,7 @@ end
 
 function Hero:collideMonster(monster)
 	local damage = monster.damage
-	self:remove()
+	--self:remove()
 end
 
 function Hero:activateMovement()
@@ -72,7 +72,8 @@ end
 function Hero:move(dx, dy, angle)
 	local image = self.image
 	local speed = self.speed
-	image:setLinearVelocity(dx*speed, dy*speed)
+	-- image:setLinearVelocity(dx*speed, dy*speed)
+	image:setLinearVelocity(dx*speed, 0)
 	if not self.weapon.isShooting then
 		image.rotation = angle
 	end
